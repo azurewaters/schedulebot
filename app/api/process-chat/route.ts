@@ -15,37 +15,26 @@ export async function POST(req:Request) {
             messages: [{ role: 'system', content: 
             `The Chat Transcript below took place on 28 January 2024 at 12:30 PM. Extract the following details from it:
 
-            TASKS:
+            Next meeting:
+            
+            1. Title of the next meeting: Set this to a less-than-10-word summary of the agenda for the next meeting.
+            2. When the participants intend to meet next, if at all. Calculate the date using the date of the chat transcript for reference. Format the resulting date as “YYYY MM DD hh:mm”. If no date is decided for the next meeting, set it to “”.
+            3. Duration of the next meeting in minutes. If no duration is discussed, set it to 30 minutes.
+            4. Location of the next meeting. If no location has been decided, then return an empty string.
+            5. Attendees of the next meeting. Assume it is all the participants of the meeting unless someone does not want to attend or is asked not to attend.
+            
+            Tasks:
             
             List tasks that someone says needs to be done or says they will do. For each pending task, find the following details:
             
             1. Summary of the task that needs to be done.
-            2. When it is due. Use the “YYYY MM DD hh:mm” format. If no date is discernible, set this to “”.
+            2. When it is due. Use the “YYYY MM DD hh:mm” format. Calculate the date using the date of the chat transcript for reference. Format the resulting date as “YYYY MM DD hh:mm”. If no date is decided for the next meeting, set it to “”.
             3. Who is assigned the task. If no one has said they will do a task, then set this to “”.
             
-            NEXT MEETING:
-            
-            1. Title of the next meeting: Set this to a less-than-10-word summary of the agenda for the next meeting.
-            2. Date of the next meeting. Use the “YYYY MM DD hh:mm” format. If no date is decided for the next meeting, denote this as “”. Use the date of the chat transcript to base the date of the next meeting on.
-            3. Duration of the next meeting in minutes. If no duration is discussed, assume 15 minutes.
-            4. Location of the next meeting. If no location has been decided, then return an empty string.
-            5. Attendees of the next meeting. Assume it is all the participants of the meeting unless someone does not want to attend or is asked not to attend.
-            
-            QUESTIONS:
-
-            1. If there are details missing, generate a question for each missing detail. Direct the question to the person who is most likely to know the answer. If no one is likely to know the answer, then direct the question to the group.
-
-            Output the above details in the following JSON format. DO NOT INCLUDE ANY COMMENTS:
+            Output the above details in as short a response as possible, using the following JSON format:
             
             {
                 “chat participants”: string [],
-                "tasks": [ 	
-                    {
-                        "task": string,
-                        "date": string,
-                        "assignee": string
-                    } 
-                ]
                 "next meeting": {
                     “title”: string,
                     "date": string,
@@ -53,11 +42,12 @@ export async function POST(req:Request) {
                     "location": string,
                     "attendees": string []
                 },
-                "questions": [
+                "tasks": [ 	
                     {
-                        "question": string,
-                        "asked to": string
-                    }
+                        "task": string,
+                        "date": string,
+                        "assignee": string
+                    } 
                 ]
             }
             __________________
